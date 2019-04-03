@@ -56,36 +56,47 @@ error = 1;
 switch v
     case 1
          %Bisection Method 
+         
          k=1;
-while (error > n)
-     
-    xr=(x1+x2)/2 ;
-    if f(xr)*f(x1) >0 
-        error = abs((xr-x1)/xr);
-        x1=xr;       
-    else
-        error = abs((xr-x2)/xr) ;
-        x2=xr;
-    end
-    tableData(k,1)=xr;
-    tableData(k,2)=error;
-    k = k+1;
-end
+  if (f(x1)*f(x2)<0)
+        while (error > n)
+
+            xr=(x1+x2)/2 ;
+            if f(xr)*f(x1) >0 
+                error = abs((xr-x1)/xr);
+                x1=xr;       
+            else
+                error = abs((xr-x2)/xr) ;
+                x2=xr;
+            end
+            tableData(k,1)=xr;
+            tableData(k,2)=error;
+            k = k+1;
+        end
+      else 
+          f = msgbox('Function dose not have root in interval!!!','Error','error');
+
+
+  end 
     case 2 
         % False-position Method
-for k = 1:n
-    xr = x2-(f(x2)*(x2-x1))/(f(x2)-f(x1));
-    if f(xr) * f(x1) >0
-        error = (xr-x1)/xr ;
-        x1 =xr;
-    else
-        error = (xr-x2)/xr ;
-        x2=xr;
+        if ((f(x1)*f(x2))<0)
+    for k = 1:n
+        xr = x2-(f(x2)*(x2-x1))/(f(x2)-f(x1));
+        if f(xr) * f(x1) >0
+            error = (xr-x1)/xr ;
+            x1 =xr;
+        else
+            error = (xr-x2)/xr ;
+            x2=xr;
+            end
+            tableData(k,1)=xr;
+            tableData(k,2)=error;
+
+    end
+        else 
+            f = msgbox('Function dose not have root in interval!!!','Error','error');
         end
-        tableData(k,1)=xr;
-        tableData(k,2)=error;
-    
-end
     case 3 
         % Newton-Raphson Method 
        fd= diff(ff);
@@ -125,7 +136,6 @@ end
         k=1;
         
         if ((g(x1)>= x1)&&(g(x2)<= x2))~=true
-            '/fontsize{15} Function dose not converge!!!';
             f = msgbox('Function dose not converge!!!','Error','error');
         end 
             pn_1=x1;
