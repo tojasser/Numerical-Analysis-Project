@@ -113,40 +113,40 @@ end
             tableData(k,2)=error;
             k=k+1;
         end
-    case 5
-        %modified Secant Method
-        d = 10^-6;
-        for k=1:n
-    xr = x1-(d*x1*f(x1))/(f(x1+d*x1)-f(x1));
-        error = (xr - x1)/xr ;
-        x1 = xr ;
-    tableData(k,1)=xr;
-    tableData(k,2)=error;
-   
 
-        end
- case 6
-        %false poisition method
+        
+ case 5
+        %Fixied-point method
+        
+        
+        fun2=@(x) x;
+        disp('fb');
+        g=(@(x) fun2(x)+f(x));
         k=1;
-       while(error > n)
-        xr=f(x1);
-        error = abs((xr - x1)/xr) ;
-        x1=xr;
-    tableData(k,1)=xr;
-    tableData(k,2)=error;
-    k=k+1;
-        end
-end
+        
+        if ((g(x1)>= x1)&&(g(x2)<= x2))~=true
+            '/fontsize{15} Function dose not converge!!!';
+            f = msgbox('Function dose not converge!!!','Error','error');
+        end 
+            pn_1=x1;
+            pn= g(pn_1);
+            error1=abs(pn-pn_1);
+            tableData(k,1)=pn;
+            tableData(k,2)=error1;
+            k=2;
+            while(error1>=n)
+                pn_1=pn;
+                pn= g(pn_1);
+                error1=abs(pn-pn_1);
+                 tableData(k,1)=pn;
+                 tableData(k,2)=error1;
+                k=k+1;
+                
+            end
+        
+end 
 
 set(handles.showResult , 'data' , tableData );
-handles.f=f;
-guidata(hObject,handles)
-handles.tableData=tableData;
-guidata(hObject,handles)
-handles.xr=xr;
-guidata(hObject,handles)
-
-
 % --- Executes on selection change in selectMethod.
 function selectMethod_Callback(hObject, eventdata, handles)
 
@@ -203,16 +203,19 @@ end
 function showResult_CellEditCallback(hObject, eventdata, handles)
 
 
-% --- Executes on button press in plot.
-function plot_Callback(hObject, eventdata, handles)
-f=handles.f;
-xr=handles.xr;
-tableData=handles.tableData;
-m=xr-.5:.01:xr+.5;
-plot(m,f(m),'r')
-hold on
-f=f(tableData(:,1));
-sz = 25;
-c = linspace(1,10,length(tableData(:,1)));
-scatter(tableData(:,1), f, sz ,c ,'filled')
-hold off
+% --- Executes on key press with focus on figure1 and none of its controls.
+function figure1_KeyPressFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  structure with the following fields (see MATLAB.UI.FIGURE)
+%	Key: name of the key that was pressed, in lower case
+%	Character: character interpretation of the key(s) that was pressed
+%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on mouse press over figure background, over a disabled or
+% --- inactive control, or over an axes background.
+function figure1_WindowButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
